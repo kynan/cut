@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 CUT(1)                                                     User Commands                                                     CUT(1)
 
@@ -87,12 +89,12 @@ def range2tuple(rng):
     bounds = rng.split('-')
     if len(bounds) == 1:
         n = int(bounds[0])
-        return (n - 1, n)
+        return n - 1, n
     if bounds[0] == '':
-        return (None, int(bounds[1]))
+        return None, int(bounds[1])
     if bounds[1] == '':
-        return (int(bounds[0]) - 1, None)
-    return (int(bounds[0]) - 1, int(bounds[1]))
+        return int(bounds[0]) - 1, None
+    return int(bounds[0]) - 1, int(bounds[1])
 
 
 def list2slice(lst):
