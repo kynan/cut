@@ -103,11 +103,20 @@ def list2slice(lst):
 
 @click.command()
 @click.option('-c', '--characters', help='select only these characters')
-def cut(characters):
+@click.option('-f', '--fields',
+              help='select  only  these fields;  also print any line that contains no delimiter character, unless the -s option is specified')
+@click.option('-d', '--delimiter', default='\t',
+              help='use DELIM instead of TAB for field delimiter')
+def cut(characters, fields, delimiter):
     """UNIX cut command."""
     for line in sys.stdin:
+        line = line.rstrip('\n')
         if characters:
             print(''.join(line[s] for s in list2slice(characters)))
+        if fields:
+            f = line.split(delimiter)
+            print(delimiter.join(delimiter.join(f[s]) for s in list2slice(fields)))
+
 
 if __name__ == '__main__':
     cut()
