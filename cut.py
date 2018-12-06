@@ -82,11 +82,30 @@ import sys
 
 import click
 
+
+def range2tuple(rng):
+    bounds = rng.split('-')
+    if len(bounds) == 1:
+        n = int(bounds[0])
+        return (n - 1, n)
+    if bounds[0] == '':
+        return (None, int(bounds[1]))
+    if bounds[1] == '':
+        return (int(bounds[0]) - 1, None)
+    return (int(bounds[0]) - 1, int(bounds[1]))
+
+
+def list2slice(lst):
+    return [slice(*range2tuple(rng)) for rng in lst.split(',')]
+
+
 @click.command()
-def cut(bytes):
+@click.option('-c', '--characters', help='select only these characters')
+def cut(characters):
     """UNIX cut command."""
     for line in sys.stdin:
-        print(line)
+        if characters:
+            print(''.join(line[s] for s in list2slice(characters)))
 
 if __name__ == '__main__':
     cut()
